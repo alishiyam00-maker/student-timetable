@@ -9,16 +9,25 @@
   <style>
     :root {
       --gold: #d89b2b;
-      --gold-light: #f4bd55;
-      --gold-dark: #a96f12;
-      --charcoal: #252a2d;
-      --charcoal-soft: #343a3d;
-      --text: #20242a;
-      --muted: #6b7280;
-      --border: #e3e5e8;
-      --bg: #f6f6f4;
-      --white: #ffffff;
+      --gold-light: #efc56d;
+      --gold-soft: #f7edd7;
+      --gold-border: #e7c987;
+
+      --charcoal: #3b383d;
+      --charcoal-soft: #5b5961;
+
+      --page-bg: #f5f3ef;
+      --card-bg: #ffffff;
+      --border: #e7e2d9;
+      --border-soft: #f0ece4;
+
+      --text: #2f2d31;
+      --muted: #7d7780;
+
+      --header-row: #4b474e;
       --danger: #b42318;
+
+      --shadow: 0 10px 28px rgba(0, 0, 0, 0.07);
     }
 
     * {
@@ -29,127 +38,97 @@
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
       background:
-        radial-gradient(circle at top, rgba(216, 155, 43, 0.08), transparent 32%),
-        var(--bg);
+        linear-gradient(180deg, #faf8f4 0%, var(--page-bg) 100%);
       color: var(--text);
     }
 
     .page {
       min-height: 100vh;
-      padding-bottom: 28px;
+      padding-bottom: 30px;
     }
 
-    .header {
-      position: relative;
-      min-height: 150px;
-      background:
-        linear-gradient(90deg, rgba(255,255,255,0.92), rgba(255,255,255,0.78)),
-        url("banner.png");
-      background-size: cover;
-      background-position: center;
-      border-bottom: 3px solid var(--gold);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 22px 16px;
+    /* Banner left alone */
+    .hero-banner {
+      width: 100%;
+      background: #f3f1ed;
+      border-bottom: 2px solid var(--gold-border);
     }
 
-    .header::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 220px;
-      height: 8px;
-      background: var(--charcoal);
-    }
-
-    .header::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 200px;
-      width: 42px;
-      height: 8px;
-      background: var(--gold);
-      transform: skewX(-35deg);
-    }
-
-    .header-content {
-      position: relative;
-      z-index: 1;
-    }
-
-    .college-mark {
-      font-size: 13px;
-      letter-spacing: 4px;
-      color: var(--gold-dark);
-      font-weight: 800;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(32px, 5vw, 58px);
-      font-weight: 900;
-      color: var(--charcoal);
-      letter-spacing: -1px;
-    }
-
-    .subtitle {
-      margin-top: 8px;
-      color: var(--gold-dark);
-      font-size: clamp(15px, 2vw, 22px);
-      font-weight: 700;
+    .hero-banner img {
+      width: 100%;
+      display: block;
+      height: auto;
     }
 
     .container {
-      width: min(1120px, calc(100% - 28px));
-      margin: 22px auto 0;
+      width: min(1180px, calc(100% - 36px));
+      margin: 26px auto 0;
+    }
+
+    .filter-card,
+    .table-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
     }
 
     .filter-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-top: 4px solid var(--gold);
-      padding: 20px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      padding: 24px 24px 20px;
     }
 
     .filter-label {
       display: block;
-      margin-bottom: 9px;
-      color: var(--charcoal);
+      margin-bottom: 12px;
       font-size: 18px;
       font-weight: 800;
+      color: var(--charcoal);
+    }
+
+    .select-wrap {
+      position: relative;
     }
 
     select {
       width: 100%;
-      min-height: 52px;
-      padding: 0 14px;
-      border: 1px solid #bfc5cc;
+      min-height: 58px;
+      border: 1px solid #d8d2c8;
+      border-radius: 12px;
+      padding: 0 52px 0 16px;
       background: #fff;
       color: var(--text);
-      font-size: 16px;
+      font-size: 17px;
       outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
     }
 
     select:focus {
       border-color: var(--gold);
-      box-shadow: 0 0 0 3px rgba(216, 155, 43, 0.18);
+      box-shadow: 0 0 0 3px rgba(216, 155, 43, 0.14);
     }
 
     select:invalid {
       color: var(--muted);
     }
 
+    .select-wrap::after {
+      content: "⌄";
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-52%);
+      font-size: 26px;
+      color: var(--charcoal);
+      pointer-events: none;
+      line-height: 1;
+    }
+
     .status {
-      margin-top: 10px;
-      color: var(--muted);
+      margin-top: 12px;
       font-size: 13px;
+      color: var(--muted);
     }
 
     .status.error {
@@ -158,40 +137,61 @@
     }
 
     .table-card {
-      margin-top: 20px;
-      background: var(--white);
-      border: 1px solid var(--border);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      margin-top: 18px;
       overflow: hidden;
+      padding: 0;
     }
 
-    .programme-bar {
+    .programme-chip-row {
+      padding: 24px 24px 14px;
+      border-bottom: 1px solid var(--border-soft);
       display: none;
+    }
+
+    .programme-chip {
+      display: inline-flex;
       align-items: center;
       gap: 12px;
-      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      background: linear-gradient(180deg, #fcf7ec 0%, #f7eed8 100%);
+      border: 1px solid var(--gold-border);
       color: var(--charcoal);
-      padding: 17px 22px;
-      font-size: 20px;
-      font-weight: 900;
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-size: 18px;
+      font-weight: 800;
+      max-width: 100%;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.65);
     }
 
-    .programme-icon {
+    .programme-chip-icon {
       width: 34px;
       height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, var(--gold) 0%, #c88c22 100%);
+      color: white;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: var(--charcoal);
-      color: var(--gold-light);
-      font-size: 18px;
+      font-size: 17px;
       flex: 0 0 auto;
+    }
+
+    .programme-chip-text {
+      display: inline-block;
+      word-break: break-word;
+    }
+
+    .table-inner {
+      padding: 18px 24px 24px;
     }
 
     .table-wrap {
       width: 100%;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #fff;
     }
 
     .table-wrap::-webkit-scrollbar {
@@ -199,11 +199,13 @@
     }
 
     .table-wrap::-webkit-scrollbar-track {
-      background: #f1f1f1;
+      background: #eee7da;
+      border-radius: 8px;
     }
 
     .table-wrap::-webkit-scrollbar-thumb {
       background: var(--gold);
+      border-radius: 8px;
     }
 
     table {
@@ -213,99 +215,88 @@
     }
 
     thead {
-      background: var(--charcoal);
+      background: var(--header-row);
       color: #fff;
     }
 
     th,
     td {
-      padding: 15px 17px;
+      padding: 15px 18px;
       text-align: left;
-      border: 1px solid var(--border);
-      vertical-align: top;
+      vertical-align: middle;
+      border-right: 1px solid #ebe5dc;
+      border-bottom: 1px solid #ebe5dc;
+    }
+
+    th:last-child,
+    td:last-child {
+      border-right: none;
     }
 
     th {
-      border-color: rgba(255,255,255,0.14);
       font-size: 16px;
-      font-weight: 900;
+      font-weight: 800;
       white-space: nowrap;
+      color: #fff;
+      border-right-color: rgba(255,255,255,0.14);
+      border-bottom-color: rgba(255,255,255,0.14);
     }
 
     td {
+      background: #fff;
       font-size: 15.5px;
       line-height: 1.4;
-      background: #fff;
+      color: var(--text);
     }
 
     tbody tr:nth-child(even) td {
-      background: #fbfbfb;
+      background: #fcfaf7;
     }
 
     .day-cell {
       font-weight: 800;
       color: var(--charcoal);
       white-space: nowrap;
+      width: 140px;
     }
 
     .time-cell {
       white-space: nowrap;
+      width: 150px;
+    }
+
+    .module-col {
+      min-width: 270px;
+    }
+
+    .lecturer-col {
+      min-width: 210px;
     }
 
     .empty-state {
-      padding: 38px 18px;
+      padding: 42px 20px;
       text-align: center;
       color: var(--muted);
       font-size: 16px;
-      border-top: 1px solid var(--border);
-      background: #fff;
     }
 
     .footer {
-      width: min(1120px, calc(100% - 28px));
+      width: min(1180px, calc(100% - 36px));
       margin: 12px auto 0;
+      text-align: right;
       color: var(--muted);
       font-size: 12px;
-      text-align: right;
     }
 
     @media (max-width: 720px) {
-      .header {
-        min-height: 125px;
-        padding: 18px 12px;
-      }
-
-      .header::before {
-        width: 150px;
-        height: 6px;
-      }
-
-      .header::after {
-        left: 135px;
-        width: 34px;
-        height: 6px;
-      }
-
-      .college-mark {
-        font-size: 11px;
-        letter-spacing: 3px;
-      }
-
-      h1 {
-        font-size: clamp(28px, 9vw, 42px);
-      }
-
-      .subtitle {
-        font-size: 14px;
-      }
-
       .container {
         width: calc(100% - 18px);
         margin-top: 14px;
       }
 
       .filter-card {
-        padding: 14px;
+        padding: 16px;
+        border-radius: 14px;
       }
 
       .filter-label {
@@ -313,77 +304,55 @@
       }
 
       select {
-        min-height: 48px;
+        min-height: 50px;
+        font-size: 15px;
+        border-radius: 10px;
+      }
+
+      .table-card {
+        border-radius: 14px;
+      }
+
+      .programme-chip-row {
+        padding: 16px 16px 12px;
+      }
+
+      .programme-chip {
+        width: 100%;
+        border-radius: 14px;
+        font-size: 15px;
+        padding: 10px 14px;
+      }
+
+      .programme-chip-icon {
+        width: 30px;
+        height: 30px;
         font-size: 15px;
       }
 
-      .programme-bar {
-        padding: 14px;
-        font-size: 16px;
-        align-items: flex-start;
-      }
-
-      .programme-icon {
-        width: 28px;
-        height: 28px;
-        font-size: 15px;
-      }
-
-      .table-wrap {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+      .table-inner {
+        padding: 12px 12px 16px;
       }
 
       table {
-        width: 100%;
-        min-width: 760px;
-        display: table;
-      }
-
-      thead {
-        display: table-header-group;
-      }
-
-      tbody {
-        display: table-row-group;
-      }
-
-      tr {
-        display: table-row;
+        min-width: 720px;
       }
 
       th,
       td {
-        display: table-cell;
-        white-space: normal;
+        padding: 12px 14px;
       }
 
       th {
         font-size: 14px;
-        padding: 12px 14px;
-        white-space: nowrap;
       }
 
       td {
         font-size: 14px;
-        padding: 12px 14px;
-      }
-
-      .day-cell,
-      .time-cell {
-        white-space: nowrap;
-      }
-
-      td::before {
-        content: none;
-      }
-
-      .empty-state {
-        font-size: 15px;
-        padding: 30px 14px;
       }
 
       .footer {
+        width: calc(100% - 18px);
         text-align: center;
       }
     }
@@ -393,17 +362,12 @@
         min-width: 700px;
       }
 
-      th,
-      td {
-        padding: 11px 12px;
+      .day-cell {
+        width: 120px;
       }
 
-      .module-col {
-        min-width: 230px;
-      }
-
-      .lecturer-col {
-        min-width: 170px;
+      .time-cell {
+        width: 120px;
       }
     }
   </style>
@@ -411,47 +375,51 @@
 
 <body>
   <main class="page">
-    <header class="header">
-      <div class="header-content">
-        <div class="college-mark">Avid College</div>
-        <h1>Student Timetable</h1>
-        <div id="intakeTitle" class="subtitle">Semester 1 • January Intake 2026</div>
-      </div>
-    </header>
+
+    <!-- Banner kept alone -->
+    <section class="hero-banner">
+      <img src="banner.png" alt="Student Timetable Banner">
+    </section>
 
     <section class="container">
       <div class="filter-card">
         <label class="filter-label" for="programmeSelect">Programme</label>
 
-        <select id="programmeSelect" required>
-          <option value="" selected disabled>Select programme here</option>
-        </select>
+        <div class="select-wrap">
+          <select id="programmeSelect" required>
+            <option value="" selected disabled>Select programme here</option>
+          </select>
+        </div>
 
         <div id="status" class="status">Loading timetable...</div>
       </div>
 
       <div class="table-card">
-        <div id="programmeBar" class="programme-bar">
-          <span class="programme-icon">🎓</span>
-          <span id="selectedProgrammeName"></span>
+        <div id="programmeChipRow" class="programme-chip-row">
+          <div class="programme-chip">
+            <span class="programme-chip-icon">🎓</span>
+            <span id="selectedProgrammeName" class="programme-chip-text"></span>
+          </div>
         </div>
 
-        <div class="table-wrap">
-          <table id="timetableTable" style="display:none;">
-            <thead>
-              <tr>
-                <th>Day</th>
-                <th>Time</th>
-                <th class="module-col">Module Name</th>
-                <th class="lecturer-col">Lecturer</th>
-              </tr>
-            </thead>
-            <tbody id="timetableBody"></tbody>
-          </table>
-        </div>
+        <div class="table-inner">
+          <div class="table-wrap">
+            <table id="timetableTable" style="display:none;">
+              <thead>
+                <tr>
+                  <th>Day</th>
+                  <th>Time</th>
+                  <th class="module-col">Module Name</th>
+                  <th class="lecturer-col">Lecturer</th>
+                </tr>
+              </thead>
+              <tbody id="timetableBody"></tbody>
+            </table>
+          </div>
 
-        <div id="emptyState" class="empty-state">
-          Please select a programme to view the timetable.
+          <div id="emptyState" class="empty-state">
+            Please select a programme to view the timetable.
+          </div>
         </div>
       </div>
     </section>
@@ -460,12 +428,6 @@
   </main>
 
   <script>
-    /*
-      Replace this with your deployed Apps Script Web App URL.
-
-      Example:
-      const API_URL = 'https://script.google.com/macros/s/AKfycbxxxxxxxxxxxxxxxx/exec';
-    */
     const API_URL = 'https://script.google.com/macros/s/AKfycbyVymT7zUusgkD56br4WWvXCLFTPnBLIF1WenQXAN_xXSjBBNwkzwoZiZjMxTB9MZpLUg/exec';
 
     const programmeSelect = document.getElementById('programmeSelect');
@@ -473,10 +435,9 @@
     const tableEl = document.getElementById('timetableTable');
     const tbodyEl = document.getElementById('timetableBody');
     const emptyStateEl = document.getElementById('emptyState');
-    const programmeBarEl = document.getElementById('programmeBar');
+    const programmeChipRowEl = document.getElementById('programmeChipRow');
     const selectedProgrammeNameEl = document.getElementById('selectedProgrammeName');
     const footerNoteEl = document.getElementById('footerNote');
-    const intakeTitleEl = document.getElementById('intakeTitle');
 
     let timetableRows = [];
 
@@ -536,12 +497,6 @@
         return;
       }
 
-      const firstIntake = timetableRows.find(row => row.intake)?.intake;
-
-      if (firstIntake) {
-        intakeTitleEl.textContent = firstIntake;
-      }
-
       setupProgrammeDropdown(timetableRows);
 
       statusEl.classList.remove('error');
@@ -563,8 +518,7 @@
             row.programmeCode,
             {
               code: row.programmeCode,
-              name: row.programmeName,
-              faculty: row.faculty
+              name: row.programmeName
             }
           ])
         ).values()
@@ -601,14 +555,14 @@
 
       if (rows.length === 0) {
         tableEl.style.display = 'none';
-        programmeBarEl.style.display = 'none';
+        programmeChipRowEl.style.display = 'none';
         emptyStateEl.style.display = 'block';
         emptyStateEl.textContent = 'No timetable found for the selected programme.';
         return;
       }
 
       selectedProgrammeNameEl.textContent = rows[0].programmeName;
-      programmeBarEl.style.display = 'flex';
+      programmeChipRowEl.style.display = 'block';
       tableEl.style.display = 'table';
       emptyStateEl.style.display = 'none';
 
@@ -616,10 +570,10 @@
         const tr = document.createElement('tr');
 
         tr.innerHTML = `
-          <td class="day-cell" data-label="Day">${escapeHtml(row.day)}</td>
-          <td class="time-cell" data-label="Time">${escapeHtml(row.time)}</td>
-          <td class="module-col" data-label="Module Name">${escapeHtml(row.moduleName)}</td>
-          <td class="lecturer-col" data-label="Lecturer">${escapeHtml(row.lecturer)}</td>
+          <td class="day-cell">${escapeHtml(row.day)}</td>
+          <td class="time-cell">${escapeHtml(row.time)}</td>
+          <td class="module-col">${escapeHtml(row.moduleName)}</td>
+          <td class="lecturer-col">${escapeHtml(row.lecturer)}</td>
         `;
 
         tbodyEl.appendChild(tr);
@@ -629,9 +583,8 @@
     function showError(message) {
       statusEl.classList.add('error');
       statusEl.textContent = message;
-
       tableEl.style.display = 'none';
-      programmeBarEl.style.display = 'none';
+      programmeChipRowEl.style.display = 'none';
       emptyStateEl.style.display = 'block';
       emptyStateEl.textContent = 'Timetable could not be loaded.';
     }
@@ -652,14 +605,12 @@
           payload
         }));
       } catch {
-        // Ignore local cache errors.
       }
     }
 
     function getCachedData() {
       try {
         const raw = localStorage.getItem('studentTimetableCache');
-
         if (!raw) return null;
 
         const cached = JSON.parse(raw);
