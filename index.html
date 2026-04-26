@@ -3,86 +3,182 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Student Timetable</title>
 
   <style>
     :root {
       --gold: #d89b2b;
-      --gold-light: #efc56d;
-      --gold-soft: #f7edd7;
-      --gold-border: #e7c987;
+      --gold-dark: #b57a15;
+      --gold-soft: #f6ead1;
 
-      --charcoal: #3b383d;
-      --charcoal-soft: #5b5961;
-
-      --page-bg: #f5f3ef;
-      --card-bg: #ffffff;
-      --border: #e7e2d9;
-      --border-soft: #f0ece4;
+      --charcoal: #3f3c43;
+      --charcoal-dark: #2f2c31;
+      --charcoal-soft: #5e5961;
 
       --text: #2f2d31;
       --muted: #7d7780;
 
-      --header-row: #4b474e;
+      --page-bg: #f6f4ef;
+      --card-bg: #ffffff;
+      --line: #e4ddd2;
+      --line-soft: #efeae1;
+
       --danger: #b42318;
 
-      --shadow: 0 10px 28px rgba(0, 0, 0, 0.07);
+      --shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+      --radius: 6px;
     }
 
     * {
       box-sizing: border-box;
     }
 
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
       font-family: Arial, Helvetica, sans-serif;
-      background:
-        linear-gradient(180deg, #faf8f4 0%, var(--page-bg) 100%);
+      background: linear-gradient(180deg, #faf8f4 0%, var(--page-bg) 100%);
       color: var(--text);
     }
 
     .page {
       min-height: 100vh;
-      padding-bottom: 30px;
+      padding-bottom: 32px;
     }
 
-    /* Banner left alone */
+    /* Banner */
     .hero-banner {
       width: 100%;
-      background: #f3f1ed;
-      border-bottom: 2px solid var(--gold-border);
+      background: #f2efea;
+      border-bottom: 1px solid #ddd6ca;
     }
 
     .hero-banner img {
       width: 100%;
-      display: block;
       height: auto;
+      display: block;
+    }
+
+    /* Accent strip below banner */
+    .accent-strip {
+      position: relative;
+      height: 18px;
+      background: transparent;
+      overflow: hidden;
+    }
+
+    .accent-strip::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: calc(100% - 210px);
+      height: 2px;
+      background: var(--gold);
+    }
+
+    .accent-strip::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 210px;
+      height: 100%;
+      background:
+        linear-gradient(135deg, transparent 0 27%, var(--gold) 27% 36%, var(--charcoal) 36% 46%, #ffffff 46% 51%, transparent 51%),
+        transparent;
     }
 
     .container {
       width: min(1180px, calc(100% - 36px));
       margin: 26px auto 0;
+      position: relative;
     }
 
-    .filter-card,
-    .table-card {
+    /* Light architectural line feeling */
+    .container::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(to right, rgba(0,0,0,0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0,0,0,0.015) 1px, transparent 1px);
+      background-size: 120px 120px, 120px 120px;
+      opacity: 0.35;
+      z-index: 0;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Generic angular panel */
+    .panel {
+      position: relative;
       background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 18px;
+      border: 1px solid var(--line);
       box-shadow: var(--shadow);
+      margin-bottom: 18px;
+      overflow: hidden;
     }
 
-    .filter-card {
-      padding: 24px 24px 20px;
+    .panel::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 160px;
+      height: 4px;
+      background: var(--gold);
+      z-index: 1;
     }
 
-    .filter-label {
-      display: block;
-      margin-bottom: 12px;
+    .panel::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 160px;
+      width: 42px;
+      height: 4px;
+      background: var(--charcoal);
+      transform: skewX(-38deg);
+      transform-origin: left;
+      z-index: 1;
+    }
+
+    .panel-inner {
+      padding: 22px;
+    }
+
+    /* Filter panel */
+    .filter-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .filter-head-mark {
+      width: 28px;
+      height: 28px;
+      background: var(--gold);
+      clip-path: polygon(0 0, 78% 0, 100% 50%, 78% 100%, 0 100%, 12% 50%);
+    }
+
+    .filter-head-title {
       font-size: 18px;
       font-weight: 800;
+      letter-spacing: 0.4px;
       color: var(--charcoal);
+      text-transform: uppercase;
+    }
+
+    .filter-rule {
+      height: 1px;
+      background: linear-gradient(90deg, var(--gold) 0, var(--gold) 130px, #ddd5c9 130px, #ddd5c9 100%);
+      margin-bottom: 18px;
     }
 
     .select-wrap {
@@ -91,13 +187,12 @@
 
     select {
       width: 100%;
-      min-height: 58px;
-      border: 1px solid #d8d2c8;
-      border-radius: 12px;
-      padding: 0 52px 0 16px;
+      min-height: 56px;
+      padding: 0 54px 0 16px;
+      border: 1px solid #d4cdc1;
       background: #fff;
       color: var(--text);
-      font-size: 17px;
+      font-size: 16px;
       outline: none;
       appearance: none;
       -webkit-appearance: none;
@@ -113,10 +208,22 @@
       color: var(--muted);
     }
 
+    .select-wrap::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 58px;
+      height: 100%;
+      background: linear-gradient(180deg, #fbfaf8 0%, #f1ece3 100%);
+      border-left: 1px solid #ddd6ca;
+      pointer-events: none;
+    }
+
     .select-wrap::after {
       content: "⌄";
       position: absolute;
-      right: 18px;
+      right: 19px;
       top: 50%;
       transform: translateY(-52%);
       font-size: 26px;
@@ -126,7 +233,7 @@
     }
 
     .status {
-      margin-top: 12px;
+      margin-top: 10px;
       font-size: 13px;
       color: var(--muted);
     }
@@ -136,61 +243,87 @@
       font-weight: 700;
     }
 
-    .table-card {
-      margin-top: 18px;
-      overflow: hidden;
-      padding: 0;
-    }
-
-    .programme-chip-row {
-      padding: 24px 24px 14px;
-      border-bottom: 1px solid var(--border-soft);
+    /* Results panel */
+    .results-topbar {
       display: none;
+      align-items: stretch;
+      border-bottom: 1px solid var(--line-soft);
+      background: linear-gradient(180deg, #ffffff 0%, #faf8f4 100%);
     }
 
-    .programme-chip {
+    .results-tag {
+      position: relative;
       display: inline-flex;
       align-items: center;
       gap: 12px;
-      background: linear-gradient(180deg, #fcf7ec 0%, #f7eed8 100%);
-      border: 1px solid var(--gold-border);
-      color: var(--charcoal);
-      padding: 12px 18px;
-      border-radius: 999px;
-      font-size: 18px;
+      min-height: 62px;
+      padding: 0 28px 0 20px;
+      background: linear-gradient(180deg, var(--gold-soft) 0%, #f4e4bf 100%);
+      color: var(--charcoal-dark);
       font-weight: 800;
+      font-size: 18px;
       max-width: 100%;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.65);
+      border-right: 1px solid #e2cf9f;
+      clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 50%, calc(100% - 22px) 100%, 0 100%);
     }
 
-    .programme-chip-icon {
+    .results-tag-icon {
       width: 34px;
       height: 34px;
-      border-radius: 50%;
-      background: linear-gradient(180deg, var(--gold) 0%, #c88c22 100%);
-      color: white;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 17px;
+      background: var(--gold);
+      color: #fff;
+      font-size: 16px;
+      clip-path: polygon(0 0, 78% 0, 100% 50%, 78% 100%, 0 100%, 12% 50%);
       flex: 0 0 auto;
     }
 
-    .programme-chip-text {
-      display: inline-block;
-      word-break: break-word;
+    .results-body {
+      padding: 18px 22px 22px;
     }
 
-    .table-inner {
-      padding: 18px 24px 24px;
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .section-label-left {
+      display: flex;
+      gap: 4px;
+    }
+
+    .section-label-left span {
+      display: block;
+      width: 18px;
+      height: 16px;
+      border: 2px solid var(--gold);
+      border-right: none;
+      transform: skewX(-38deg);
+    }
+
+    .section-label-text {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--charcoal);
+      text-transform: uppercase;
+    }
+
+    .section-label-rule {
+      flex: 1;
+      height: 1px;
+      background: #ded7cb;
     }
 
     .table-wrap {
       width: 100%;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
-      border: 1px solid var(--border);
-      border-radius: 14px;
+      border: 1px solid var(--line);
       background: #fff;
     }
 
@@ -200,22 +333,20 @@
 
     .table-wrap::-webkit-scrollbar-track {
       background: #eee7da;
-      border-radius: 8px;
     }
 
     .table-wrap::-webkit-scrollbar-thumb {
       background: var(--gold);
-      border-radius: 8px;
     }
 
     table {
       width: 100%;
-      min-width: 760px;
+      min-width: 780px;
       border-collapse: collapse;
     }
 
-    thead {
-      background: var(--header-row);
+    thead tr {
+      background: linear-gradient(90deg, var(--charcoal-dark), var(--charcoal));
       color: #fff;
     }
 
@@ -224,8 +355,8 @@
       padding: 15px 18px;
       text-align: left;
       vertical-align: middle;
-      border-right: 1px solid #ebe5dc;
-      border-bottom: 1px solid #ebe5dc;
+      border-bottom: 1px solid #ece6dc;
+      border-right: 1px solid #ece6dc;
     }
 
     th:last-child,
@@ -234,108 +365,118 @@
     }
 
     th {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 800;
       white-space: nowrap;
-      color: #fff;
-      border-right-color: rgba(255,255,255,0.14);
-      border-bottom-color: rgba(255,255,255,0.14);
+      letter-spacing: 0.3px;
+      position: relative;
+    }
+
+    th::before {
+      content: "";
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 10px;
+      background: var(--gold);
+      clip-path: polygon(0 0, 78% 0, 100% 50%, 78% 100%, 0 100%, 12% 50%);
+      vertical-align: middle;
     }
 
     td {
       background: #fff;
-      font-size: 15.5px;
-      line-height: 1.4;
-      color: var(--text);
+      font-size: 15px;
+      line-height: 1.45;
     }
 
     tbody tr:nth-child(even) td {
-      background: #fcfaf7;
+      background: #fcfaf6;
+    }
+
+    tbody tr:hover td {
+      background: #fffaf0;
     }
 
     .day-cell {
+      width: 140px;
+      white-space: nowrap;
       font-weight: 800;
       color: var(--charcoal);
-      white-space: nowrap;
-      width: 140px;
     }
 
     .time-cell {
+      width: 145px;
       white-space: nowrap;
-      width: 150px;
     }
 
     .module-col {
-      min-width: 270px;
+      min-width: 290px;
     }
 
     .lecturer-col {
-      min-width: 210px;
+      min-width: 220px;
     }
 
     .empty-state {
-      padding: 42px 20px;
+      padding: 42px 18px;
       text-align: center;
       color: var(--muted);
       font-size: 16px;
+      background: #fff;
+      border: 1px dashed #dbd2c2;
     }
 
     .footer {
       width: min(1180px, calc(100% - 36px));
       margin: 12px auto 0;
-      text-align: right;
       color: var(--muted);
       font-size: 12px;
+      text-align: right;
     }
 
-    @media (max-width: 720px) {
+    @media (max-width: 820px) {
       .container {
         width: calc(100% - 18px);
         margin-top: 14px;
       }
 
-      .filter-card {
+      .panel-inner {
         padding: 16px;
-        border-radius: 14px;
       }
 
-      .filter-label {
+      .results-body {
+        padding: 14px;
+      }
+
+      .results-topbar {
+        min-height: 58px;
+      }
+
+      .results-tag {
+        width: 100%;
+        min-height: 56px;
+        font-size: 15px;
+        padding: 0 18px 0 14px;
+        clip-path: none;
+      }
+
+      .results-tag-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+      }
+
+      .filter-head-title {
         font-size: 16px;
       }
 
       select {
         min-height: 50px;
         font-size: 15px;
-        border-radius: 10px;
-      }
-
-      .table-card {
-        border-radius: 14px;
-      }
-
-      .programme-chip-row {
-        padding: 16px 16px 12px;
-      }
-
-      .programme-chip {
-        width: 100%;
-        border-radius: 14px;
-        font-size: 15px;
-        padding: 10px 14px;
-      }
-
-      .programme-chip-icon {
-        width: 30px;
-        height: 30px;
-        font-size: 15px;
-      }
-
-      .table-inner {
-        padding: 12px 12px 16px;
       }
 
       table {
-        min-width: 720px;
+        min-width: 730px;
       }
 
       th,
@@ -357,7 +498,20 @@
       }
     }
 
-    @media (max-width: 430px) {
+    @media (max-width: 480px) {
+      .accent-strip::before {
+        width: calc(100% - 110px);
+      }
+
+      .accent-strip::after {
+        width: 110px;
+      }
+
+      .section-label-left span {
+        width: 14px;
+        height: 12px;
+      }
+
       table {
         min-width: 700px;
       }
@@ -375,52 +529,73 @@
 
 <body>
   <main class="page">
-
-    <!-- Banner kept alone -->
     <section class="hero-banner">
       <img src="banner.png" alt="Student Timetable Banner">
     </section>
 
+    <div class="accent-strip"></div>
+
     <section class="container">
-      <div class="filter-card">
-        <label class="filter-label" for="programmeSelect">Programme</label>
+      <div class="content">
 
-        <div class="select-wrap">
-          <select id="programmeSelect" required>
-            <option value="" selected disabled>Select programme here</option>
-          </select>
-        </div>
+        <!-- Filter -->
+        <div class="panel">
+          <div class="panel-inner">
+            <div class="filter-head">
+              <div class="filter-head-mark"></div>
+              <div class="filter-head-title">Programme Selection</div>
+            </div>
 
-        <div id="status" class="status">Loading timetable...</div>
-      </div>
+            <div class="filter-rule"></div>
 
-      <div class="table-card">
-        <div id="programmeChipRow" class="programme-chip-row">
-          <div class="programme-chip">
-            <span class="programme-chip-icon">🎓</span>
-            <span id="selectedProgrammeName" class="programme-chip-text"></span>
+            <div class="select-wrap">
+              <select id="programmeSelect" required>
+                <option value="" selected disabled>Select programme here</option>
+              </select>
+            </div>
+
+            <div id="status" class="status">Loading timetable...</div>
           </div>
         </div>
 
-        <div class="table-inner">
-          <div class="table-wrap">
-            <table id="timetableTable" style="display:none;">
-              <thead>
-                <tr>
-                  <th>Day</th>
-                  <th>Time</th>
-                  <th class="module-col">Module Name</th>
-                  <th class="lecturer-col">Lecturer</th>
-                </tr>
-              </thead>
-              <tbody id="timetableBody"></tbody>
-            </table>
+        <!-- Results -->
+        <div class="panel">
+          <div id="resultsTopbar" class="results-topbar">
+            <div class="results-tag">
+              <span class="results-tag-icon">🎓</span>
+              <span id="selectedProgrammeName"></span>
+            </div>
           </div>
 
-          <div id="emptyState" class="empty-state">
-            Please select a programme to view the timetable.
+          <div class="results-body">
+            <div class="section-label">
+              <div class="section-label-left">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="section-label-text">Weekly Schedule</div>
+              <div class="section-label-rule"></div>
+            </div>
+
+            <div class="table-wrap">
+              <table id="timetableTable" style="display:none;">
+                <thead>
+                  <tr>
+                    <th>Day</th>
+                    <th>Time</th>
+                    <th class="module-col">Module Name</th>
+                    <th class="lecturer-col">Lecturer</th>
+                  </tr>
+                </thead>
+                <tbody id="timetableBody"></tbody>
+              </table>
+            </div>
+
+            <div id="emptyState" class="empty-state">
+              Please select a programme to view the timetable.
+            </div>
           </div>
         </div>
+
       </div>
     </section>
 
@@ -435,7 +610,7 @@
     const tableEl = document.getElementById('timetableTable');
     const tbodyEl = document.getElementById('timetableBody');
     const emptyStateEl = document.getElementById('emptyState');
-    const programmeChipRowEl = document.getElementById('programmeChipRow');
+    const resultsTopbarEl = document.getElementById('resultsTopbar');
     const selectedProgrammeNameEl = document.getElementById('selectedProgrammeName');
     const footerNoteEl = document.getElementById('footerNote');
 
@@ -500,9 +675,9 @@
       setupProgrammeDropdown(timetableRows);
 
       statusEl.classList.remove('error');
-      statusEl.textContent = fromCache
+      /*statusEl.textContent = fromCache
         ? 'Timetable loaded from local cache.'
-        : 'Timetable loaded.';
+        : 'Timetable loaded.';*/
 
       footerNoteEl.textContent = payload.updatedAt
         ? `Last refreshed: ${formatDate(payload.updatedAt)}`
@@ -555,14 +730,14 @@
 
       if (rows.length === 0) {
         tableEl.style.display = 'none';
-        programmeChipRowEl.style.display = 'none';
+        resultsTopbarEl.style.display = 'none';
         emptyStateEl.style.display = 'block';
         emptyStateEl.textContent = 'No timetable found for the selected programme.';
         return;
       }
 
       selectedProgrammeNameEl.textContent = rows[0].programmeName;
-      programmeChipRowEl.style.display = 'block';
+      resultsTopbarEl.style.display = 'flex';
       tableEl.style.display = 'table';
       emptyStateEl.style.display = 'none';
 
@@ -584,7 +759,7 @@
       statusEl.classList.add('error');
       statusEl.textContent = message;
       tableEl.style.display = 'none';
-      programmeChipRowEl.style.display = 'none';
+      resultsTopbarEl.style.display = 'none';
       emptyStateEl.style.display = 'block';
       emptyStateEl.textContent = 'Timetable could not be loaded.';
     }
